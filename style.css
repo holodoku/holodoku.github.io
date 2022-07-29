@@ -20,13 +20,16 @@ div.tile {
     text-align: center;
 }
 
+.tile * {
+
+    width: 6vw;
+        height: 6vw;
+}
+
 img.tile {
     display: block;
     margin: auto;
     padding: 0;
-
-    width: 6vw;
-    height: 6vw;
 
     background-size: cover;
     background-position: center;
@@ -39,10 +42,13 @@ img.tile {
 .clickable:hover {
     cursor: pointer;
     border-color: red;
+    border-style: solid;
+}
+.clickable:active {
+    border-style: dashed;
 }
 .clickable:focus {
     border-color: red;
-    border-style: solid;
 }
 
 table {

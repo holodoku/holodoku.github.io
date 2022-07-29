@@ -10,7 +10,7 @@ function blockIndex(index) {
 
 function allowed(squares, index) {
     if (squares[index] !== null) return null;
-    let out = Array(9).fill(true);
+    const out = Array(9).fill(true);
 
     // check column
     for (let i = index % 9; i < 81; i += 9)
@@ -30,6 +30,46 @@ function allowed(squares, index) {
     return out;
 }
 
+// checks for any mistakes in the sudoku board
+function verifySudoku(tableData) {
+    // check rows
+    for (let y = 0; y < 81; y += 9) {
+        const row = Array(9).fill(false);
+        for (let x = y; x < y + 9; x++) {
+            const data = tableData[x];
+            if (data === null || row[data]) return false;
+            row[data] = true;
+        }
+    }
+
+    // check columns
+    for (let x = 0; x < 9; x++) {
+        const col = Array(9).fill(false);
+        for (let y = x; y < 81; y += 9) {
+            const data = tableData[y];
+            if (data === null || col[data]) return false;
+            col[data] = true;
+        }
+    }
+
+    // check blocks
+    for (let by = 0; by < 81; by += 27) {
+        for (let bx = by; bx < by + 9; bx += 3) {
+            const blk = Array(9).fill(false);
+            for (let y = bx; y < bx + 27; y += 9) {
+                for (let x = y; x < y + 3; x++) {
+                    const data = tableData[x];
+                    if (data === null || blk[data]) return false;
+                    blk[data] = true;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+// take nth element of array
 function take(arr, i) {
     let val = arr.pop();
     if (arr.length === i) return val;
@@ -44,10 +84,12 @@ function takeRandom(arr) {
     return val === undefined ? null : val;
 }
 
+// array from 0 to end-1
 function arrayRange(end) {
     return [...Array(end).entries()].map(kv => kv[0]);
 }
 
+// returns an array of every index inside of array that is null
 function emptySpaceIndices(arr) {
     return [...arr.entries()].filter(kv => kv[1] === null).map(kv => kv[0]);
 }
@@ -114,6 +156,7 @@ function solveTable(squares = Array(81).fill(null), hole = null) {
     return squares;
 }
 
+// converts a pettan list of squares into a string
 function gridStr(squares) {
     let grid = '';
     for (let y = 0; y < 9; y++) {
@@ -126,7 +169,9 @@ function gridStr(squares) {
     return `grid:\n${grid}`;
 }
 
-function pokeHoles(grid, target) {
+// pokes holes in the list of squares until either the target is reached
+// or you can't poke any more without creating multiple solutions
+function pokeHoles(squares, target) {
     if (target > 50) {
         alert("don't generate more than 50 holes. It takes too long.");
         return;
@@ -138,13 +183,13 @@ function pokeHoles(grid, target) {
             alert(`could only generate ${count} out of ${target} holes.`);
             return;
         }
-        const testSolve = solveTable([...grid], idx);
+        const testSolve = solveTable([...squares], idx);
         if (testSolve !== null) {
             if (count > 60) alert(count, gridStr(testSolve));
             // alert('nonnull');
             continue;
         }
-        grid[idx] = null;
+        squares[idx] = null;
         count++;
     }
 }
@@ -189,58 +234,101 @@ const members = [
     }, // pls why is your gen so unicode
 ];
 
+// converts a nullable id into a url to an image
 function getMemberImgUrl(id) {
     return id === null
         ? 'https://static.wikia.nocookie.net/fc620067-166e-48d9-baa7-44abee59e6e1/scale-to-width/755'
         : members[id].link;
 }
 
-function makeHoloTile(data, clickable) {
+function makeTile(clickable) {
     const tile = document.createElement('div');
     tile.classList.add('tile');
-
-    const img = document.createElement('img');
-    img.src = getMemberImgUrl(data);
-    img.classList.add('tile');
     if (clickable) {
         tile.classList.add('clickable');
         tile.tabIndex = -1;
     }
+    return tile;
+}
+
+// creates a tile with a holomem's picture on it
+// if clickable, the tile will react to mouse hovers and clicks
+// however will not actually do anything until functionality is provided
+function makeImageTile(src, clickable) {
+    const tile = makeTile(clickable);
+    const img = document.createElement('img');
+    img.src = src;
+    img.classList.add('tile');
     tile.appendChild(img);
     return tile;
 }
 
+function submitSudoku(tableData) {
+    if (verifySudoku(tableData)) {
+        alert('You Win!');
+    } else {
+        alert('Nope, try again.');
+    }
+}
+
 function viewTile(target, tableData, tileIdx) {
-    const data = tableData[tileIdx];
     const view = document.getElementById('tileView');
     view.innerHTML = '';
 
     const div = document.createElement('div');
     div.innerHTML = '<h1>Change Tile?</h1>';
+
+    // makes the block of holomems
     function makeSetterTile(data) {
-        const tile = makeHoloTile(data, true);
+        const src = getMemberImgUrl(data);
+        const tile = makeImageTile(src, true);
         tile.onclick = _ => {
             tableData[tileIdx] = data;
-            target.children[0].src = getMemberImgUrl(data);
+            target.children[0].src = src;
             target.focus();
         };
         return tile;
     }
-    div.appendChild(makeSetterTile(null));
-    div.appendChild(
-        make3x3((x, y) => {
-            return makeSetterTile(y * 3 + x);
-        })
+    div.appendChild(make3x3((x, y) => makeSetterTile(y * 3 + x)));
+
+    // creates a tr and puts td's in to replicate the border brought upon us by make3x3
+    const row = document.createElement('tr');
+    function append(thing) {
+        const tile = document.createElement('td');
+        tile.appendChild(thing);
+        row.appendChild(tile);
+    }
+    append(makeSetterTile(null));
+    const close = makeImageTile(
+        'https://www.pngall.com/wp-content/uploads/5/Delete-Red-X-Button-Transparent.png',
+        true
     );
+    close.onclick = _ => closeTileView();
+    append(close);
+
+    const submit = makeImageTile(
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Eo_circle_green_white_checkmark.svg/800px-Eo_circle_green_white_checkmark.svg.png',
+        true
+    );
+    submit.onclick = _ => submitSudoku(tableData);
+    append(submit);
+
+    div.appendChild(row);
+
     view.appendChild(div);
+}
+
+function closeTileView() {
+    document.getElementById('tileView').innerHTML = '<h1>Select a tile.</h1>';
 }
 
 function makeSudokuTile(tableData, tileIdx) {
     const data = tableData[tileIdx];
-    const holoTile = makeHoloTile(data, data === null);
-    if (data === null) {
-        holoTile.onfocus = _ => viewTile(holoTile, tableData, tileIdx);
-    }
+    const holoTile = makeImageTile(getMemberImgUrl(data), data === null);
+    holoTile.onclick =
+        data === null
+            ? _ => viewTile(holoTile, tableData, tileIdx)
+            : _ => closeTileView();
     return holoTile;
 }
 
@@ -258,28 +346,30 @@ function make3x3(f) {
     return table;
 }
 
-function makeTable(tableData) {
+// takes a pettan list of squares and displays it to the user
+// by inserting the sudoku board into the element with id 'board'
+function makeTable(squares) {
+    closeTileView();
     const board = document.getElementById('board');
     board.innerHTML = '';
     board.appendChild(
         make3x3((bx, by) =>
             make3x3((x, y) => {
                 const tileIdx = by * 27 + bx * 3 + y * 9 + x;
-                return makeSudokuTile(tableData, tileIdx);
+                return makeSudokuTile(squares, tileIdx);
             })
         )
     );
-    const view = document.getElementById('tileView');
-    view.innerHTML = '<h1>Select a tile.</h1>';
 }
 
+// generates a new sudoku puzzle with the specified number of holes
 function generate() {
-    let table = solveTable();
+    const table = solveTable();
     console.log(gridStr(table));
     const holeCount = document.getElementById('holeCount').value;
+    const solved = [...table];
     pokeHoles(table, holeCount);
     console.log(gridStr(table));
     makeTable(table);
-    // console.log(gridStr(solveGrid(grid)));
 }
 generate();
