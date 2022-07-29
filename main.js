@@ -197,39 +197,39 @@ function pokeHoles(squares, target) {
 // TODO: use json
 const members = [
     {
-        name: 'risu',
+        name: 'Risu',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/04/%E3%83%AA%E3%82%B9-1.png',
     },
     {
-        name: 'moona',
+        name: 'Moona',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/04/%E3%83%A0%E3%83%BC%E3%83%8A-1.png',
     },
     {
-        name: 'iofi',
+        name: 'Iofi',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/04/%E3%82%A4%E3%82%AA%E3%83%95%E3%82%A3-1.png',
     },
     {
-        name: 'ollie',
+        name: 'Ollie',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2021/11/kureiji_ollie_thumb-2.png.png',
     }, // yes there are 2 .png's
     {
-        name: 'anya',
+        name: 'Anya',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2021/11/anya_melfissa_thumb-2.png.png',
     }, // 2 .png's again
     {
-        name: 'reine',
+        name: 'Reine',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2021/11/pavolia_reine_thumb-2.png.png.png',
     }, // now this is getting out of hand
     {
-        name: 'zeta',
+        name: 'Zeta',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/03/1_%E3%83%99%E3%82%B9%E3%83%86%E3%82%A3%E3%82%A2%E3%83%BB%E3%82%BC%E3%83%BC%E3%82%BF.png',
     }, // she uses so many unicode characters in her link dude
     {
-        name: 'kaela',
+        name: 'Kaela',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/03/2_%E3%82%AB%E3%82%A8%E3%83%A9%E3%83%BB%E3%82%B3%E3%83%B4%E3%82%A1%E3%83%AB%E3%82%B9%E3%82%AD%E3%82%A2.png',
     }, // ...
     {
-        name: 'kobo',
+        name: 'Kobo',
         link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/03/3_%E3%81%93%E3%81%BC%E3%83%BB%E3%81%8B%E3%81%AA%E3%81%88%E3%82%8B.png',
     }, // pls why is your gen so unicode
 ];
@@ -278,17 +278,28 @@ function submitSudoku(tableData) {
 }
 
 function viewTile(target, tableData, tileIdx) {
+    const data = tableData[tileIdx];
+
     const view = document.getElementById('tileView');
-    view.innerHTML = '';
+    view.innerHTML = '<h1>Change Tile?</h1>';
 
     const div = document.createElement('div');
-    div.innerHTML = '<h1>Change Tile?</h1>';
+    div.style.zoom = '275%';
+
+    const icon = makeImageTile(getMemberImgUrl(data), false);
+    div.appendChild(icon);
+    const name = document.createElement('label');
+    name.innerHTML = data === null ? 'Empty' : members[data].name;
+    div.appendChild(name);
+    view.appendChild(div);
 
     // makes the block of holomems
     function makeSetterTile(data) {
         const src = getMemberImgUrl(data);
         const tile = makeImageTile(src, true);
         tile.onclick = _ => {
+            icon.children[0].src = src;
+            name.innerHTML = data === null ? 'Empty' : members[data].name;
             tableData[tileIdx] = data;
             target.children[0].src = src;
             target.focus();
@@ -326,9 +337,7 @@ function viewTile(target, tableData, tileIdx) {
     append(submit);
 
     table.appendChild(row);
-    div.appendChild(table);
-
-    view.appendChild(div);
+    view.appendChild(table);
 }
 
 function closeTileView() {
