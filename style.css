@@ -2,12 +2,12 @@
     display: inline-block;
 }
 #board table {
-    padding: 0.5vw;
-    border: 0.325vw skyblue solid;
-    border-radius: 2vw;
+    padding: 0.5vh;
+    border: 0.325vh skyblue solid;
+    border-radius: 2vh;
 }
 #board table table {
-    border: 0.125vw lightblue dashed;
+    border: 0.125vh lightblue dashed;
     border-radius: 0;
 }
 #board table tr:nth-child(1) td table {
@@ -27,23 +27,22 @@
     display: inline-block;
     vertical-align: top;
 
-    padding: 1vw;
-    border: 0.325vw skyblue solid;
-    border-radius: 1vw;
+    padding: 2vh;
+    border: 0.65vh skyblue solid;
+    border-radius: 2vh;
 }
 
 div.tile {
-    margin: 0.125vw;
-    padding: 0.125vw;
-    border: 0.25vw transparent solid;
-    border-radius: 1vh;
+    margin: 0.25vh;
+    padding: 0.25vh;
+    border: 0.5vh transparent solid;
+    border-radius: 2vh;
     text-align: center;
 }
 
 .tile * {
-
-    width: 6vw;
-        height: 6vw;
+    width: 7vh;
+    height: 7vh;
 }
 
 img.tile {
@@ -85,5 +84,5 @@ td * {
 }
 
 div {
-    margin: 0.5vw;
+    margin: 0.5vh;
 }
