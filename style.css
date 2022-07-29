@@ -3,43 +3,46 @@
 }
 
 #tileView {
+    text-align: center;
     display: inline-block;
     vertical-align: top;
 
+    padding: 1vw;
     border: 0.25vw lightblue solid;
     border-radius: 1vw;
 }
 
-/* #mainArea {
-    padding: 1vw;
-} */
+div.tile {
+    margin: 0.125vw;
+    padding: 0.125vw;
+    border: 0.25vw white solid;
+    border-radius: 1vh;
+    text-align: center;
+}
 
-.tile {
+img.tile {
     display: block;
+    margin: auto;
+    padding: 0;
+
     width: 6vw;
     height: 6vw;
-    margin: 0.125vw;
-    padding: 0;
 
     background-size: cover;
     background-position: center;
-
-    border: 0.25vw white solid;
-    border-radius: 1vh;
 }
 
 .tile.clickable {
-    border-color: red;
-    border-style: double;
+    border-color: dodgerblue;
+    border-style: dashed;
 }
 .clickable:hover {
     cursor: pointer;
     border-color: red;
-    border-style: solid;
 }
 .clickable:focus {
     border-color: red;
-    border-style: dashed;
+    border-style: solid;
 }
 
 table {
@@ -48,7 +51,7 @@ table {
 
 td {
     padding: 0;
-    border: 0.125vw gray solid;
+    border: 0.125vw lightgray solid;
 }
 
 td * {

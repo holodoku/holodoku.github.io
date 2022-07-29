@@ -78,7 +78,6 @@ function solveTable(squares = Array(81).fill(null), hole = null) {
             available: [...baseline],
         });
     }
-    console.log(spaces);
 
     let curIdx = 0;
     let current = spaces[curIdx];
@@ -198,12 +197,16 @@ function getMemberImgUrl(id) {
 
 function makeHoloTile(data, clickable) {
     const tile = document.createElement('div');
-    tile.style.backgroundImage = `url("${getMemberImgUrl(data)}")`;
     tile.classList.add('tile');
+
+    const img = document.createElement('img');
+    img.src = getMemberImgUrl(data);
+    img.classList.add('tile');
     if (clickable) {
         tile.classList.add('clickable');
         tile.tabIndex = -1;
     }
+    tile.appendChild(img);
     return tile;
 }
 
@@ -213,12 +216,13 @@ function viewTile(target, tableData, tileIdx) {
     view.innerHTML = '';
 
     const div = document.createElement('div');
-    div.appendChild(makeHoloTile(data, false));
+    div.innerHTML = '<h1>Change Tile?</h1>';
     function makeSetterTile(data) {
         const tile = makeHoloTile(data, true);
-        tile.onmousedown = _ => {
+        tile.onclick = _ => {
             tableData[tileIdx] = data;
-            target.style.backgroundImage = `url("${getMemberImgUrl(data)}")`;
+            target.children[0].src = getMemberImgUrl(data);
+            target.focus();
         };
         return tile;
     }
@@ -265,6 +269,8 @@ function makeTable(tableData) {
             })
         )
     );
+    const view = document.getElementById('tileView');
+    view.innerHTML = '<h1>Select a tile.</h1>';
 }
 
 function generate() {
