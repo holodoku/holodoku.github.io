@@ -1,6 +1,26 @@
 #board {
     display: inline-block;
 }
+#board table {
+    padding: 0.5vw;
+    border: 0.325vw skyblue solid;
+    border-radius: 2vw;
+}
+#board table table {
+    border: 0.125vw lightblue dashed;
+    border-radius: 0;
+}
+#board table tr:nth-child(1) td table {
+    border-top: none;
+}
+#board table tr:nth-child(3) td table {
+    border-bottom: none;
+}
+#board table tr td:nth-child(1) table {
+    border-left: none;
+}#board table tr td:nth-child(3) table {
+    border-right: none;
+}
 
 #tileView {
     text-align: center;
@@ -8,14 +28,14 @@
     vertical-align: top;
 
     padding: 1vw;
-    border: 0.25vw lightblue solid;
+    border: 0.325vw skyblue solid;
     border-radius: 1vw;
 }
 
 div.tile {
     margin: 0.125vw;
     padding: 0.125vw;
-    border: 0.25vw white solid;
+    border: 0.25vw transparent solid;
     border-radius: 1vh;
     text-align: center;
 }
@@ -52,12 +72,12 @@ img.tile {
 }
 
 table {
-    border-collapse: collapse;
+    /* border-collapse: collapse; */
+    border-spacing: 0;
 }
 
 td {
     padding: 0;
-    border: 0.125vw lightgray solid;
 }
 
 td * {

@@ -267,7 +267,7 @@ function submitSudoku(tableData) {
     if (verifySudoku(tableData)) {
         alert('You Win!');
     } else {
-        alert('Nope, try again.');
+        alert("The board isn't solved yet, try again.");
     }
 }
 
@@ -289,23 +289,29 @@ function viewTile(target, tableData, tileIdx) {
         };
         return tile;
     }
-    div.appendChild(make3x3((x, y) => makeSetterTile(y * 3 + x)));
+    const table = make3x3((x, y) => makeSetterTile(y * 3 + x));
 
-    // creates a tr and puts td's in to replicate the border brought upon us by make3x3
+    // TODO: generalize make3x3 to allow this 3x4
+    // or not?
     const row = document.createElement('tr');
     function append(thing) {
         const tile = document.createElement('td');
         tile.appendChild(thing);
         row.appendChild(tile);
     }
-    append(makeSetterTile(null));
+
+    // append close button
     const close = makeImageTile(
-        'https://www.pngall.com/wp-content/uploads/5/Delete-Red-X-Button-Transparent.png',
+        'https://toppng.com/uploads/preview/red-x-in-circle-x-ico-11563249170jvl0jhe7df.png',
         true
     );
     close.onclick = _ => closeTileView();
     append(close);
 
+    // append empty tile
+    append(makeSetterTile(null));
+
+    // append submit button
     const submit = makeImageTile(
         'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Eo_circle_green_white_checkmark.svg/800px-Eo_circle_green_white_checkmark.svg.png',
         true
@@ -313,7 +319,8 @@ function viewTile(target, tableData, tileIdx) {
     submit.onclick = _ => submitSudoku(tableData);
     append(submit);
 
-    div.appendChild(row);
+    table.appendChild(row);
+    div.appendChild(table);
 
     view.appendChild(div);
 }
