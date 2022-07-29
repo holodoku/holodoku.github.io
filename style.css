@@ -1,9 +1,13 @@
+#game {
+    text-align: center;
+}
+
 #board {
     display: inline-block;
 }
 #board table {
     padding: 0.5vh;
-    border: 0.325vh skyblue solid;
+    border: 0.65vh skyblue solid;
     border-radius: 2vh;
 }
 #board table table {
@@ -18,7 +22,8 @@
 }
 #board table tr td:nth-child(1) table {
     border-left: none;
-}#board table tr td:nth-child(3) table {
+}
+#board table tr td:nth-child(3) table {
     border-right: none;
 }
 
@@ -36,7 +41,7 @@ div.tile {
     margin: 0.25vh;
     padding: 0.25vh;
     border: 0.5vh transparent solid;
-    border-radius: 2vh;
+    border-radius: 1vh;
     text-align: center;
 }
 
