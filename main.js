@@ -265,6 +265,12 @@ function makeImageTile(src, clickable) {
 
 function submitSudoku(tableData) {
     if (verifySudoku(tableData)) {
+        document.getElementById('title').innerText = 'HoloDoku!';
+        for (const el of [...document.getElementsByClassName('clickable')]) {
+            el.classList.remove('clickable');
+            el.onclick = _ => {};
+        }
+        document.getElementById('tileView').innerHTML = '<h1>Solved!</h1>';
         alert('You Win!');
     } else {
         alert("The board isn't solved yet, try again.");
@@ -300,13 +306,13 @@ function viewTile(target, tableData, tileIdx) {
         row.appendChild(tile);
     }
 
-    // append close button
-    const close = makeImageTile(
-        'https://toppng.com/uploads/preview/red-x-in-circle-x-ico-11563249170jvl0jhe7df.png',
+    // append minimize button
+    const minimize = makeImageTile(
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKyrrANWFI25P9-AMoCqua1nA-o-sjQyNTAA&usqp=CAU',
         true
     );
-    close.onclick = _ => closeTileView();
-    append(close);
+    minimize.onclick = _ => closeTileView();
+    append(minimize);
 
     // append empty tile
     append(makeSetterTile(null));
@@ -371,6 +377,7 @@ function makeTable(squares) {
 
 // generates a new sudoku puzzle with the specified number of holes
 function generate() {
+    document.getElementById('title').innerText = 'HoloDoko?';
     const table = solveTable();
     console.log(gridStr(table));
     const holeCount = document.getElementById('holeCount').value;
