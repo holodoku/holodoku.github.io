@@ -210,16 +210,24 @@ function makeHoloTile(data, clickable) {
 function viewTile(target, tableData, tileIdx) {
     const data = tableData[tileIdx];
     const view = document.getElementById('tileView');
+    view.innerHTML = '';
+
     const div = document.createElement('div');
     div.appendChild(makeHoloTile(data, false));
-    for (const data of [null, ...arrayRange(9)]) {
+    function makeSetterTile(data) {
         const tile = makeHoloTile(data, true);
-        tile.onmousedown = e => {
+        tile.onmousedown = _ => {
             tableData[tileIdx] = data;
-            target.backgroundImage = `url("${getMemberImgUrl(data)}")`;
+            target.style.backgroundImage = `url("${getMemberImgUrl(data)}")`;
         };
-        div.appendChild(tile);
+        return tile;
     }
+    div.appendChild(makeSetterTile(null));
+    div.appendChild(
+        make3x3((x, y) => {
+            return makeSetterTile(y * 3 + x);
+        })
+    );
     view.appendChild(div);
 }
 
@@ -227,7 +235,7 @@ function makeSudokuTile(tableData, tileIdx) {
     const data = tableData[tileIdx];
     const holoTile = makeHoloTile(data, data === null);
     if (data === null) {
-        holoTile.onfocus = e => viewTile(e.target, tableData, tileIdx);
+        holoTile.onfocus = _ => viewTile(holoTile, tableData, tileIdx);
     }
     return holoTile;
 }

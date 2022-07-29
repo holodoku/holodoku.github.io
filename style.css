@@ -16,9 +16,9 @@
 
 .tile {
     display: block;
-    width: 5vw;
-    height: 5vw;
-    margin: 0.25vw;
+    width: 6vw;
+    height: 6vw;
+    margin: 0.125vw;
     padding: 0;
 
     background-size: cover;
@@ -29,8 +29,8 @@
 }
 
 .tile.clickable {
-    border-color: lightblue;
-    border-style: dashed;
+    border-color: red;
+    border-style: double;
 }
 .clickable:hover {
     cursor: pointer;
@@ -39,7 +39,7 @@
 }
 .clickable:focus {
     border-color: red;
-    border-style: double;
+    border-style: dashed;
 }
 
 table {
