@@ -9,15 +9,22 @@
 Opening up the console will show you the solution using numbers. The numbering goes from 0-9, in order that they appear on <a href="https://hololive.hololivepro.com/en/talents?gp=indonesia">the official HoloID page.</a></p>
     <br>
     <p>You can customize the number of holes in the board.</p>
-    <label>hole count</label>
-    <input id="holeCount" type="number" value="40">
-    <button onclick="generate()">Generate</button>
-    <div id="board"></div>
+    <div id="game">
+      <div>
+        <label>hole count</label>
+        <input id="holeCount" type="number" value="40">
+        <button onclick="generate()">Generate</button>
+      </div>
+      <div id="mainArea">
+        <div id="board"></div>
+        <div id="tileView"></div>
+      </div>
+    </div>
     <h2>Patch notes</h2>
     <ol>
       <li>July 27-28. the plan is just a little (Patch 8: hah, "little") project in jsfiddle. i can save a project and link it from here. i have the images laid out in a table. i need to emphasize the 3 by 3 borders though, so i'll have to change the way i structure the table. The hardest part of all this seems to be generating the damn grid. I'll have to do some research.</li>
       <li>Thanks to <a href="https://www.codeproject.com/Articles/23206/Sudoku-Algorithm-Generates-a-Valid-Sudoku-in-0-018">this guy</a> I now have a working algorithm written in JS that produces a whole solved sudoku board. I don't know if it's completely bug-free, but it seems to work. Now I gotta poke some holes in it.</li>
-      <li>I can now generate sudoku boards. I have not a single clue whether they're correctly generated. (*Refer to EDIT 6) I hope to Matsuri my spaghetti is correct. It's quite sloppy, it can't reliably delete every tile it wants to.</li>
+      <li>I can now generate sudoku boards. I have not a single clue whether they're correctly generated. (*Refer to Patch 6) I hope to Matsuri my spaghetti is correct. It's quite sloppy, it can't reliably delete every tile it wants to.</li>
       <li>3 by 3 borders now display.</li>
       <li>It is 1:06 A.M. Do you know how difficult it is to write a Sudoku generator? I want to commit sudoku and it's not the kind I'm developing rn /j I need sleep holy hell. Generating the puzzle requires solving the puzzle. For every single space you take out. And if I want it to have any reasonable difficulty, I'll have to make a solver that only uses certain techniques. Which means coding those techniques. Grr. Should've just grabbed a normal generator somewhere.</li>
       <li>Bug in the code means they're probably unsolvable.</li>

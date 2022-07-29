@@ -1,25 +1,30 @@
-table {
-    border-spacing: 0;
-    border: 0.25vh gray solid;
-    /* border-radius: 1vh; */
+#board {
+    display: inline-block;
 }
 
-td {
-    padding: 0;
+#tileView {
+    display: inline-block;
+    vertical-align: top;
+
+    border: 0.25vw lightblue solid;
+    border-radius: 1vw;
 }
 
-td * {
-    margin: auto;
-}
+/* #mainArea {
+    padding: 1vw;
+} */
 
 .tile {
+    display: block;
+    width: 5vw;
+    height: 5vw;
+    margin: 0.25vw;
+    padding: 0;
+
     background-size: cover;
     background-position: center;
-    
-    display: block;
-    width: 10vh;
-    height: 10vh;
-    border: 0.5vh white solid;
+
+    border: 0.25vw white solid;
     border-radius: 1vh;
 }
 
@@ -29,5 +34,27 @@ td * {
 }
 .clickable:hover {
     cursor: pointer;
-    border: 0.5vh red solid;
+    border-color: red;
+    border-style: solid;
+}
+.clickable:focus {
+    border-color: red;
+    border-style: double;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    padding: 0;
+    border: 0.125vw gray solid;
+}
+
+td * {
+    margin: auto;
+}
+
+div {
+    margin: 0.5vw;
 }

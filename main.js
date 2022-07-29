@@ -100,6 +100,7 @@ function solveTable(squares = Array(81).fill(null), hole = null) {
             squares[current.index] = null;
         }
         iterations++;
+        // LOGICAL ERROR: it will not exhaustively search for solutions anymore if this is enabled
         // if (iterations > 8192) {
         //     if (hole === null) {
         //         alert('that took a little too many attempts. try again.');
@@ -149,65 +150,113 @@ function pokeHoles(grid, target) {
     }
 }
 
-const memberLinks = [
-    '2022/04/%E3%83%AA%E3%82%B9-1.png', // risu
-    '2022/04/%E3%83%A0%E3%83%BC%E3%83%8A-1.png', // moona
-    '2022/04/%E3%82%A4%E3%82%AA%E3%83%95%E3%82%A3-1.png', // iofi
-    '2021/11/kureiji_ollie_thumb-2.png.png', // ollie, yes there are 2 .png's
-    '2021/11/anya_melfissa_thumb-2.png.png', // anya, 2 .png's again
-    // and now this is getting out of hand
-    '2021/11/pavolia_reine_thumb-2.png.png.png', // reine
-    '2022/03/1_%E3%83%99%E3%82%B9%E3%83%86%E3%82%A3%E3%82%A2%E3%83%BB%E3%82%BC%E3%83%BC%E3%82%BF.png', // zeta uses so many unicode characters in her link dude
-    '2022/03/2_%E3%82%AB%E3%82%A8%E3%83%A9%E3%83%BB%E3%82%B3%E3%83%B4%E3%82%A1%E3%83%AB%E3%82%B9%E3%82%AD%E3%82%A2.png', // kaela...
-    '2022/03/3_%E3%81%93%E3%81%BC%E3%83%BB%E3%81%8B%E3%81%AA%E3%81%88%E3%82%8B.png', // kobo pls why is your gen so unicode
+// TODO: use json
+const members = [
+    {
+        name: 'risu',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/04/%E3%83%AA%E3%82%B9-1.png',
+    },
+    {
+        name: 'moona',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/04/%E3%83%A0%E3%83%BC%E3%83%8A-1.png',
+    },
+    {
+        name: 'iofi',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/04/%E3%82%A4%E3%82%AA%E3%83%95%E3%82%A3-1.png',
+    },
+    {
+        name: 'ollie',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2021/11/kureiji_ollie_thumb-2.png.png',
+    }, // yes there are 2 .png's
+    {
+        name: 'anya',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2021/11/anya_melfissa_thumb-2.png.png',
+    }, // 2 .png's again
+    {
+        name: 'reine',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2021/11/pavolia_reine_thumb-2.png.png.png',
+    }, // now this is getting out of hand
+    {
+        name: 'zeta',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/03/1_%E3%83%99%E3%82%B9%E3%83%86%E3%82%A3%E3%82%A2%E3%83%BB%E3%82%BC%E3%83%BC%E3%82%BF.png',
+    }, // she uses so many unicode characters in her link dude
+    {
+        name: 'kaela',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/03/2_%E3%82%AB%E3%82%A8%E3%83%A9%E3%83%BB%E3%82%B3%E3%83%B4%E3%82%A1%E3%83%AB%E3%82%B9%E3%82%AD%E3%82%A2.png',
+    }, // ...
+    {
+        name: 'kobo',
+        link: 'https://hololive.hololivepro.com/wp-content/uploads/2022/03/3_%E3%81%93%E3%81%BC%E3%83%BB%E3%81%8B%E3%81%AA%E3%81%88%E3%82%8B.png',
+    }, // pls why is your gen so unicode
 ];
 
 function getMemberImgUrl(id) {
     return id === null
         ? 'https://static.wikia.nocookie.net/fc620067-166e-48d9-baa7-44abee59e6e1/scale-to-width/755'
-        : `https://hololive.hololivepro.com/wp-content/uploads/${memberLinks[id]}`;
+        : members[id].link;
 }
 
-function makeHoloTile(data, click) {
-    let tile = document.createElement('div');
+function makeHoloTile(data, clickable) {
+    const tile = document.createElement('div');
     tile.style.backgroundImage = `url("${getMemberImgUrl(data)}")`;
     tile.classList.add('tile');
-    if (data === null) {
+    if (clickable) {
         tile.classList.add('clickable');
-        tile.onclick = click;
+        tile.tabIndex = -1;
     }
     return tile;
 }
 
-// dear matsuri
-function makeTable(tableData, click) {
-    const board = document.getElementById('board');
-    if (board.children[0]) board.removeChild(board.children[0]);
-
-    let blockTable = document.createElement('table');
-    for (let by = 0; by < 3; by++) {
-        let blockRow = document.createElement('tr');
-        for (let bx = 0; bx < 3; bx++) {
-            let blockTile = document.createElement('td');
-            let table = document.createElement('table');
-            for (let y = 0; y < 3; y++) {
-                let row = document.createElement('tr');
-                for (let x = 0; x < 3; x++) {
-                    const tileIdx = by * 27 + bx * 3 + y * 9 + x;
-                    let tile = document.createElement('td');
-                    tile.appendChild(
-                        makeHoloTile(tableData[tileIdx], click(tileIdx))
-                    );
-                    row.appendChild(tile);
-                }
-                table.appendChild(row);
-            }
-            blockTile.appendChild(table);
-            blockRow.appendChild(blockTile);
-        }
-        blockTable.appendChild(blockRow);
+function viewTile(target, tableData, tileIdx) {
+    const data = tableData[tileIdx];
+    const view = document.getElementById('tileView');
+    const div = document.createElement('div');
+    div.appendChild(makeHoloTile(data, false));
+    for (const data of [null, ...arrayRange(9)]) {
+        const tile = makeHoloTile(data, true);
+        tile.onmousedown = e => {
+            tableData[tileIdx] = data;
+            target.backgroundImage = `url("${getMemberImgUrl(data)}")`;
+        };
+        div.appendChild(tile);
     }
-    board.appendChild(blockTable);
+    view.appendChild(div);
+}
+
+function makeSudokuTile(tableData, tileIdx) {
+    const data = tableData[tileIdx];
+    const holoTile = makeHoloTile(data, data === null);
+    if (data === null) {
+        holoTile.onfocus = e => viewTile(e.target, tableData, tileIdx);
+    }
+    return holoTile;
+}
+
+function make3x3(f) {
+    const table = document.createElement('table');
+    for (let y = 0; y < 3; y++) {
+        const row = document.createElement('tr');
+        for (let x = 0; x < 3; x++) {
+            const tile = document.createElement('td');
+            tile.appendChild(f(x, y));
+            row.appendChild(tile);
+        }
+        table.appendChild(row);
+    }
+    return table;
+}
+
+function makeTable(tableData) {
+    const board = document.getElementById('board');
+    board.innerHTML = '';
+    board.appendChild(
+        make3x3((bx, by) =>
+            make3x3((x, y) => {
+                const tileIdx = by * 27 + bx * 3 + y * 9 + x;
+                return makeSudokuTile(tableData, tileIdx);
+            })
+        )
+    );
 }
 
 function generate() {
@@ -216,9 +265,7 @@ function generate() {
     const holeCount = document.getElementById('holeCount').value;
     pokeHoles(table, holeCount);
     console.log(gridStr(table));
-    makeTable(table, idx => e => {
-        alert(`clicked ${idx}`);
-    });
+    makeTable(table);
     // console.log(gridStr(solveGrid(grid)));
 }
 generate();
