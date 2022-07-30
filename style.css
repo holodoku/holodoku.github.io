@@ -2,27 +2,38 @@
     text-align: center;
 }
 
+#bigTile {
+    margin: 8vw 8vw 9vw;
+    transform: scale(2.75);
+}
+
 #board {
     display: inline-block;
 }
+
 #board table {
-    padding: 0.5vh;
-    border: 0.65vh skyblue solid;
-    border-radius: 2vh;
+    padding: 0.5vw;
+    border: 0.325vw skyblue solid;
+    border-radius: 2vw;
 }
+
 #board table table {
-    border: 0.125vh lightblue dashed;
+    border: 0.125vw lightblue dashed;
     border-radius: 0;
 }
+
 #board table tr:nth-child(1) td table {
     border-top: none;
 }
+
 #board table tr:nth-child(3) td table {
     border-bottom: none;
 }
+
 #board table tr td:nth-child(1) table {
     border-left: none;
 }
+
 #board table tr td:nth-child(3) table {
     border-right: none;
 }
@@ -32,26 +43,23 @@
     display: inline-block;
     vertical-align: top;
 
-    padding: 2vh;
-    border: 0.65vh skyblue solid;
-    border-radius: 2vh;
-}
-#bigTile {
-    margin: 8vh 6vh 12vh;
-    transform: scale(2.75);
+    padding: 1vw;
+    border: 0.325vw skyblue solid;
+    border-radius: 1vw;
 }
 
 div.tile {
-    margin: 0.25vh;
-    padding: 0.25vh;
-    border: 0.5vh transparent solid;
+    margin: 0.125vw;
+    padding: 0.125vw;
+    border: 0.25vw transparent solid;
     border-radius: 1vh;
     text-align: center;
 }
 
 .tile * {
-    width: 7vh;
-    height: 7vh;
+
+    width: 6vw;
+    height: 6vw;
 }
 
 img.tile {
@@ -67,14 +75,17 @@ img.tile {
     border-color: dodgerblue;
     border-style: dashed;
 }
+
 .clickable:hover {
     cursor: pointer;
     border-color: red;
     border-style: solid;
 }
+
 .clickable:active {
     border-style: dashed;
 }
+
 .clickable:focus {
     border-color: red;
 }
@@ -93,5 +104,5 @@ td * {
 }
 
 div {
-    margin: 0.5vh;
+    margin: 0.5vw;
 }
