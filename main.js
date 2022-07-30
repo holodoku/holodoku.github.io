@@ -284,7 +284,7 @@ function viewTile(target, tableData, tileIdx) {
     view.innerHTML = '<h1>Change Tile?</h1>';
 
     const div = document.createElement('div');
-    div.style.zoom = '275%';
+    div.id = 'bigTile';
 
     const icon = makeImageTile(getMemberImgUrl(data), false);
     div.appendChild(icon);
