@@ -36,6 +36,10 @@
     border: 0.65vh skyblue solid;
     border-radius: 2vh;
 }
+#bigTile {
+    margin: 8vh 6vh 12vh;
+    transform: scale(2.75);
+}
 
 div.tile {
     margin: 0.25vh;
